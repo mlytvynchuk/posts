@@ -7,8 +7,11 @@
   <article class="media content-section"> 
     <div class="media-body">
       <div class="article-metadata">
-
-        <a  href="#">{{ post.author }}</a>
+          {% if post.is_active %}
+          <a href="#">Active</a>
+          {% else %}
+          <a href="#">On Moderation</a>
+          {%endif%}
         <small class="text-muted ml-2">{{ post.date_posted|date:"F d, Y" }}</small>
       </div>
       <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>

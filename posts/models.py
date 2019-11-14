@@ -10,7 +10,7 @@ class Post(models.Model):
     content = RichTextUploadingField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
+    is_active = models.BooleanField(default=False)
     def __str__(self):
         return self.title
 
