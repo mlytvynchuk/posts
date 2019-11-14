@@ -3,17 +3,16 @@
 
 {% block content %}
         <article class="media content-section">
-              <img src="{{object.author.profile.image.url }}" alt="lol" class="rounded-circle article-img">
   <div class="media-body">
         <div class="article-metadata">
             <a  href="#">{{ object.author }}</a>
             <small class="text-muted ml-2">{{ object.date_posted|date:"F d, Y" }}</small>
         </div>
         <h2 class="article-title">{{ object.title }}</h2>
-        <p class="article-content">{{ object.content }}</p>
+        <p class="article-content">{{ object.content|safe }}</p>
         {% if object.author == user %}
-            <a class="btn btn-outline-primary" href="{% url 'twitt-update' object.id%}">Update</a>
-                   <a class="btn btn-outline-danger" href="{% url 'twitt-delete' object.id  %}">Delete twitt</a>
+            <a class="btn btn-outline-primary" href="{% url 'post-update' object.id%}">Update</a>
+                   <a class="btn btn-outline-danger" href="{% url 'post-delete' object.id  %}">Delete post</a>
 
       {% endif %}
   </div>

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="content-section">
+    <div class="content-section" style="display: inline-block;">
             <form method="post">{% csrf_token %}
             <legend class="border-bottom mb-4">{{ titleView }}</legend>
               <div class="form-group">
@@ -11,7 +11,7 @@
                         {{ field.label_tag }}<br>
                     {% if field.value is not None %}
                         {% if field.name == 'content' %}
-                            <textarea name="{{ field.name }}" class="form-control add-text" >{{ field.value }}</textarea>
+                        {{form.content}}
                         {% else %}
                             <input name="{{ field.name }}" class="form-control" type="text" value="{{ field.value }}">
 

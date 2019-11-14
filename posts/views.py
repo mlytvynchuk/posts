@@ -16,7 +16,7 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'posts/Post-detail.html'
+    template_name = 'posts/post_detail.html'
 
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
