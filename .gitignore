@@ -1,0 +1,7 @@
+news/email_info.py
+venv/
+.vscode/
+.DS_Store
+__pycache__/
+*.pyc
+db.sqlite3

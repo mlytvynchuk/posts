@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="content-section">
+  <div class="media">
+    <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+    <div class="media-body">
+      <h2 class="account-heading">{{ user.username }}</h2>
+      <p class="text-secondary">{{ user.email }}</p>
+    </div>
+  </div>
+  <!-- UPDATE FORM -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <legend class="border-bottom mb-4">Profile details</legend>
+              <div class="form-group">
+                  {% for field in u_form %}
+
+                    <p class="">
+                        {{ field.label_tag }}<br>
+                        {% if field.name == 'email'%}
+                            <input name="{{ field.name }}" class="form-control" type="email" value="{{field.value}}">
+                        {% else %}
+                            <input name="{{ field.name }}" class="form-control" type="text" value="{{ field.value }}">
+                        {% endif %}
+
+                        {% if field.help_text %}
+                            <small class= "text_help"style="color: grey;">{{ field.help_text }}</small>
+                        {% endif %}
+                    </p>
+
+                {% endfor %}
+                {% for field in p_form%}
+
+                    <p class="">
+                        {{ field.label_tag }}<br>
+                        <input name="{{ field.name }}" class="" type="file">
+                        {% if field.help_text %}
+                            <small class= "text_help"style="color: grey;">{{ field.help_text }}</small>
+                        {% endif %}
+                    </p>
+
+                    {% for error in field.errors %}
+                        <p class="text-primary">{{ error }}</p>
+                    {% endfor %}
+
+                {% endfor %}
+               <div class="form-group mt-2">
+                <button class="btn btn-outline-primary" type="submit">Update</button>
+            </div>
+              </div>
+        </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="content-section">
+            <form method="post">{% csrf_token %}
+            <legend class="border-bottom mb-4">{{ titleView }}</legend>
+              <div class="form-group">
+                  <h3>Are you sure to delete post {{ object.title }}?</h3>
+               <div class="form-group mt-2">
+                   <button class="btn btn-danger" type="submit">{{ buttonView }}</button>
+                   <a class="btn btn-outline-secondary" href="{% url 'twitt-detail' object.id  %}">Cancel</a>
+
+            </div>
+              </div>
+        </form>
+
+    </div>
+{% endblock content %}

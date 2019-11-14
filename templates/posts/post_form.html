@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="content-section">
+            <form method="post">{% csrf_token %}
+            <legend class="border-bottom mb-4">{{ titleView }}</legend>
+              <div class="form-group">
+                  {% for field in form %}
+
+                    <p class="">
+                        {{ field.label_tag }}<br>
+                    {% if field.value is not None %}
+                        {% if field.name == 'content' %}
+                            <textarea name="{{ field.name }}" class="form-control add-text" >{{ field.value }}</textarea>
+                        {% else %}
+                            <input name="{{ field.name }}" class="form-control" type="text" value="{{ field.value }}">
+
+                        {% endif %}
+                    {% else %}
+                        {% if field.name == 'content' %}
+                            
+                            {{form.content}}
+                        {% else %}
+                            <input name="{{ field.name }}" class="form-control" type="text" value="">
+                        {% endif %}
+
+
+                    {% endif %}
+                    {% if field.help_text %}
+                            <small class= "text_help"style="color: grey;">{{ field.help_text }}</small>
+                        {% endif %}
+                </p>
+
+                {% for error in field.errors %}
+                    <p class="text-primary">{{ error }}</p>
+                {% endfor %}
+
+        {% endfor %}
+               <div class="form-group mt-2">
+                <button class="btn btn-outline-primary" type="submit">{{buttonView}}</button>
+            </div>
+              </div>
+        </form>
+
+    </div>
+{% endblock content %}
