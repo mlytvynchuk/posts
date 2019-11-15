@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.db import models
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
-from .models import Post
-from users.models import User
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+from django.shortcuts import get_object_or_404
+from .models import Post, Comment
+from users.models import User
+
 
 class PostListView(ListView):
     model = Post
@@ -22,9 +23,17 @@ class PostListView(ListView):
         return ctx
 
 
-class PostDetailView(DetailView):
-    model = Post
-    template_name = 'posts/post_detail.html'
+def post_detail(request, pk):
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=pk)
+        new_comment = Comment.objects.create(post=post, author=request.user, content=request.POST['content'])
+        comments = Comment.objects.filter(post=post).order_by('-date_posted')
+    else:
+        post = get_object_or_404(Post, pk=pk)
+        comments = Comment.objects.filter(post=post).order_by('-date_posted')
+
+    return render(request, 'posts/post_detail.html', context={'object': post, 'comments': comments})
+
 
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post

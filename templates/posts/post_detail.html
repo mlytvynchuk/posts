@@ -17,4 +17,25 @@
       {% endif %}
   </div>
 </article>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+        <div class="col-6">
+                <input type="text" class="form-control" name="content" / >
+        </div>
+        <div class="col-6">
+            <button type="submit" class="btn btn-primary">Comment</button>
+        </div>
+        
+        </div>
+        
+    </form>
+    {% for comment in comments%}
+        <div>
+            <a><b>{{comment.author}}</b></a>
+            <p style="font-size: 13px;">{{comment.content}}</p>
+        </div>
+    {%empty%}
+    <p>No comments yet</p>
+    {%endfor%}
 {% endblock content %}

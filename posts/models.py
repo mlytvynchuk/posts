@@ -9,10 +9,23 @@ class Post(models.Model):
     title = models.CharField(max_length=256)
     content = RichTextUploadingField()
     date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=False)
+
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('post-detail',kwargs={'pk': self.pk})
+        return reverse('post-detail', kwargs={'pk': self.pk})
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField()
+    date_posted = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return "{} - {}".format(self.author, self.content)
