@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
@@ -13,30 +14,27 @@ from .tokens import account_activation_token
 from .models import User
 
 
+def send_email_confirmation(user):
+    message = render_to_string('email/acc_active_email.html', {
+                'user': user,
+                'domain': 'http://localhost:8000/',
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+    subject = "Email Confirmation on NEWS"
+    email = EmailMessage(subject, message, to=[user.email])
+    email.send()
+
 
 def signup(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            print("USER CORRECT")
-            current_site = get_current_site(request)
-            subject = "Sign Up on NEWS"
-            message = "Thank you for registration on our website. Please confirm your email by clicking on link below."
-            message = render_to_string('email/acc_active_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
-                'token':account_activation_token.make_token(user),
-            })
-            from_email = settings.EMAIL_HOST_USER
-            to_email = user.email
-            email = EmailMessage(subject, message, to=[to_email])
-            email.send()
             return HttpResponse('Please confirm your email address to complete the registration')
     else:
         form = UserRegisterForm()
-        return render(request, 'usr/register.html', context={'form': form})
+    return render(request, 'usr/register.html', context={'form': form})
 
             
 def activate(request, uidb64, token):

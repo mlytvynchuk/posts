@@ -43,7 +43,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        if self.request.user.is_staff:
+        if self.request.user.is_staff or self.request.user.is_editor:
             form.instance.is_active = True
         return super().form_valid(form)
 

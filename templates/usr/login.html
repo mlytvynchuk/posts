@@ -5,8 +5,21 @@
             <form method="post">{% csrf_token %}
             <legend class="border-bottom mb-4">Please login to use News</legend>
               <div class="form-group">
-                  {% for field in form %}
+                    {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning">{{ message }}</div>
+                    {% endfor %}
+        
+                {% endif %}
+                    {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ error }}
+                          </div>
 
+                    {% endfor %}
+                    {% endif %}
+                  {% for field in form %}
                 <p class="">
                 {% for error in field.errors %}
                     <p class="text-primary">{{ error }}</p>

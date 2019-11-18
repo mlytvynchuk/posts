@@ -1,9 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
-# Create your models here.
-
-from django.contrib.auth.models import BaseUserManager
+from django.db.models import signals
+from .tasks import send_email_confirmation
 
 
 class MyUserManager(BaseUserManager):
@@ -66,3 +66,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.email
+
+
+def user_post_save(sender, instance, signal, *args, **kwargs):
+    if not instance.is_active:
+        print("HELLO")
+        send_email_confirmation.delay(instance.pk)
+
+
+signals.post_save.connect(user_post_save, sender=User)

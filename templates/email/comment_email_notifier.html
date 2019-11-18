@@ -1,0 +1,6 @@
+{% autoescape off %}
+Hi {{ receiver.email }},
+You received comment on your post: {{post_title}}
+Check it!
+http://{{ domain }}/post/{{post_url}}
+{% endautoescape %}
